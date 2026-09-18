@@ -209,7 +209,7 @@ Next.js App Router, React, TypeScript strict, Tailwind, TanStack Query, Zustand,
 14. [x] `Select`: лейбл, красная обводка и текст ошибки под полем.
 15. [x] Список слотов срока (scroll-snap, «До конца смены» + 15 мин на 24 ч).
 16. [x] `Badge`: «Стоп», «Сохраняется».
-17. [ ] Zustand (панель, `selectedId`, тосты) + `Toast`.
+17. [x] Zustand (панель, `selectedId`, тосты) + `Toast`.
 
 ### 4. Экран списка
 
