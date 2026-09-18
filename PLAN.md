@@ -184,60 +184,61 @@ Next.js App Router, React, TypeScript strict, Tailwind, TanStack Query, Zustand,
 
 ### 0. Подготовка
 
-1. Правила Cursor: слои, импорты, обоснования, ответы только в чате.
-2. Этот `PLAN.md` — чеклист реализации.
+1. [x] Правила Cursor: слои, импорты, обоснования, ответы только в чате.
+2. [x] Этот `PLAN.md` — чеклист реализации.
 
 ### 1. Каркас
 
-3. Next.js App Router, TypeScript strict, Tailwind, без `src/`. Папки `app/`, `features/stop-list/`, `entities/menu/`, `shared/`.
-4. ESLint + Prettier, зелёный lint.
-5. `shared/styles/tokens.css` + Tailwind `@theme`, системный шрифт, контейнер 1280px, `app/layout.tsx`.
-6. `app/providers.tsx` — QueryClientProvider.
+3. [x] Next.js App Router, TypeScript strict, Tailwind, без `src/`. Папки `app/`, `features/stop-list/`, `entities/menu/`, `shared/`.
+4. [x] ESLint + Prettier, зелёный lint.
+5. [ ] `shared/styles/tokens.css` + Tailwind `@theme`, системный шрифт, контейнер 1280px, `app/layout.tsx`.
+6. [ ] `app/providers.tsx` — QueryClientProvider.
 
 ### 2. Домен и мок-API
 
-7. Типы и map подписей причин/цехов в `entities/menu/model`. У `MenuItem` поле `updatedAt` (ISO); в UI список его не показывает.
-8. Zod-схема `StopItemPayload`, схема query `shop`/`status` и `validateUntil` в `shared/lib`.
-9. Сид 12–15 позиций (все цеха, стоп и продажа, один `stock === 0`, у каждой `updatedAt`) и `app/api/menu-items/store.ts` на `globalThis`.
-10. `GET /api/menu-items`: задержка 600 мс; нет `shop`/`status` — все; невалидный параметр — 400; ~10% ответов 500.
-11. `POST .../stop`: Zod, 600 мс, ~20% ошибка (постановка и правка причины/срока).
-12. `POST .../resume`: 600 мс, ~20% ошибка, отказ при `stock === 0`.
+7. [ ] Типы и map подписей причин/цехов в `entities/menu/model`. У `MenuItem` поле `updatedAt` (ISO); в UI список его не показывает.
+8. [ ] Zod-схема `StopItemPayload`, схема query `shop`/`status` и `validateUntil` в `shared/lib`.
+9. [ ] Сид 12–15 позиций (все цеха, стоп и продажа, один `stock === 0`, у каждой `updatedAt`) и `app/api/menu-items/store.ts` на `globalThis`.
+10. [ ] `GET /api/menu-items`: задержка 600 мс; нет `shop`/`status` — все; невалидный параметр — 400; ~10% ответов 500.
+11. [ ] `POST .../stop`: Zod, 600 мс, ~20% ошибка (постановка и правка причины/срока).
+12. [ ] `POST .../resume`: 600 мс, ~20% ошибка, отказ при `stock === 0`.
 
 ### 3. Shared UI
 
-13. `Button`: акцент / нейтральная / ghost, loading (текст + спиннер, disabled).
-14. `Select`: лейбл, красная обводка и текст ошибки под полем.
-15. Список слотов срока (scroll-snap, «До конца смены» + 15 мин на 24 ч).
-16. `Badge`: «Стоп», «Сохраняется».
-17. Zustand (панель, `selectedId`, тосты) + `Toast`.
+13. [ ] `Button`: акцент / нейтральная / ghost, loading (текст + спиннер, disabled).
+14. [ ] `Select`: лейбл, красная обводка и текст ошибки под полем.
+15. [ ] Список слотов срока (scroll-snap, «До конца смены» + 15 мин на 24 ч).
+16. [ ] `Badge`: «Стоп», «Сохраняется».
+17. [ ] Zustand (панель, `selectedId`, тосты) + `Toast`.
 
 ### 4. Экран списка
 
-18. `entities/menu/api`: `getMenuItems`, `stopMenuItem`, `resumeMenuItem`.
-19. `menuKeys`, queryOptions списка (`retry: false`), хук списка. Скелетон по `isPending`, не по `isFetching`.
-20. Фильтры в URL (`router.push`), пустой параметр = все; сырые query уходят в GET.
-21. `Filters`: две radio-группы с «Все»; без Query, значения и смена — пропсы из `StopList`.
-22. `StopListTable` + `StopListItem`: колонки Название / Цех / Остаток / Статус / Срок, зебра, приглушение стопа, клик по строке, без кнопок и без запросов.
-23. `StopList`: хуки Query и URL; заголовок; скелетон; ошибка GET (текст сервера + «Повторить»); пустой список.
-24. `app/page.tsx` читает `searchParams` и рендерит `StopList`.
+18. [ ] `entities/menu/api`: `getMenuItems`, `stopMenuItem`, `resumeMenuItem`.
+19. [ ] `menuKeys`, queryOptions списка (`retry: false`), хук списка. Скелетон по `isPending`, не по `isFetching`.
+20. [ ] Фильтры в URL (`router.push`), пустой параметр = все; сырые query уходят в GET.
+21. [ ] `Filters`: две radio-группы с «Все»; без Query, значения и смена — пропсы из `StopList`.
+22. [ ] `StopListTable` + `StopListItem`: колонки Название / Цех / Остаток / Статус / Срок, зебра, приглушение стопа, клик по строке, без кнопок и без запросов.
+23. [ ] `StopList`: хуки Query и URL; заголовок; скелетон; ошибка GET (текст сервера + «Повторить»); пустой список.
+24. [ ] `app/page.tsx` читает `searchParams` и рендерит `StopList`.
 
 ### 5. Панель и мутации
 
-25. Оверлей панели ~400px, колонки «Статус» и «Срок» под ней; выбранная строка подсвечена.
-26. `useStopItem` / сохранение правки: `cancelQueries`, оптимистичный `setQueryData`, откат `prev` в `onError`, `invalidateQueries` в `onSettled`, «Сохраняется».
-27. `useResumeItem`: тот же цикл `cancelQueries` / `onMutate` / `onError` / `onSettled`; при `stock === 0` кнопка в панели disabled + tooltip на обёртке.
-28. `StopReasonPanel`: React Hook Form + Zod resolver; шапка блюда, причина, слоты срока; кнопки «В стоп-лист» / «Вернуть в продажу» + «Сохранить»; мутации — колбэки из `StopList`.
-29. Валидация: пустой blur без ошибки; после submit — ошибки под пустыми/невалидными полями; «Сохранить» disabled без изменений.
-30. Тост при ошибке сервера; откат строки; после `invalidateQueries` список не сбрасывается в скелетон (`isPending` только у первого GET).
-31. Framer Motion (панель, бейдж).
-32. Доступность: Escape, focus trap, возврат фокуса на строку, aria у диалога / listbox / ошибок / фильтров, работа с клавиатуры.
+25. [ ] Оверлей панели ~400px, колонки «Статус» и «Срок» под ней; выбранная строка подсвечена.
+26. [ ] `useStopItem` / сохранение правки: `cancelQueries`, оптимистичный `setQueryData`, откат `prev` в `onError`, `invalidateQueries` в `onSettled`, «Сохраняется».
+27. [ ] `useResumeItem`: тот же цикл `cancelQueries` / `onMutate` / `onError` / `onSettled`; при `stock === 0` кнопка в панели disabled + tooltip на обёртке.
+28. [ ] `StopReasonPanel`: React Hook Form + Zod resolver; шапка блюда, причина, слоты срока; кнопки «В стоп-лист» / «Вернуть в продажу» + «Сохранить»; мутации — колбэки из `StopList`.
+29. [ ] Валидация: пустой blur без ошибки; после submit — ошибки под пустыми/невалидными полями; «Сохранить» disabled без изменений.
+30. [ ] Тост при ошибке сервера; откат строки; после `invalidateQueries` список не сбрасывается в скелетон (`isPending` только у первого GET).
+31. [ ] Framer Motion (панель, бейдж).
+32. [ ] Доступность: Escape, focus trap, возврат фокуса на строку, aria у диалога / listbox / ошибок / фильтров, работа с клавиатуры.
 
 ### 6. Сдача
 
-33. README: запуск, слои, обоснования, in-memory на Vercel, пожелания (нулевой остаток, истечение срока).
-34. Один тест на rollback оптимистики.
-35. JSDoc во все компоненты.
-36. Публичный GitHub + деплой Vercel.
+33. [ ] README: запуск, слои, обоснования, in-memory на Vercel, пожелания (нулевой остаток, истечение срока).
+34. [ ] Один тест на rollback оптимистики.
+35. [ ] JSDoc во все компоненты.
+36. [ ] Запуск проверки линтера и Prettier перед публикацией.
+37. [ ] Публичный GitHub + деплой Vercel.
 
 ---
 
