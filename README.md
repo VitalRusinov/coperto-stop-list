@@ -13,6 +13,14 @@ npm run dev
 
 Откройте [http://localhost:3000](http://localhost:3000). Задержка GET/POST 600 мс и случайные 500 (~20 %) намеренные: так видны скелетон, ошибка списка и откат оптимистики.
 
+## Тест
+
+Один тест: оптимистичная постановка в стоп и откат кэша, если `POST .../stop` падает.
+
+```bash
+npm test
+```
+
 ## Слои и граница сервер / клиент
 
 `app/page.tsx` — серверный компонент: читает `searchParams` и отдаёт их в клиентский `StopList`. `app/layout.tsx` и `app/providers.tsx` — оболочка и `QueryClientProvider`. HTTP — `app/api/menu-items/**`: в `route.ts` задержка, валидация и ответы, в `store.ts` сид и in-memory на `globalThis`.
