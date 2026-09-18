@@ -1,6 +1,7 @@
 "use client";
 
 import { AnimatePresence, motion } from "framer-motion";
+import { useCallback, useEffect, useRef } from "react";
 import { Button } from "@/shared/ui";
 import {
   useMenuFilters,
@@ -27,6 +28,38 @@ export function StopList({ shop, status }: MenuFilterSearchParams) {
   const openPanel = useUiStore((state) => state.openPanel);
   const closePanel = useUiStore((state) => state.closePanel);
   const selectedItem = data?.find((item) => item.id === selectedId) ?? null;
+  const restoreFocusId = useRef<string | null>(null);
+
+  const handleOpen = useCallback(
+    (id: string) => {
+      restoreFocusId.current = null;
+      openPanel(id);
+    },
+    [openPanel],
+  );
+
+  const handleClose = useCallback(() => {
+    restoreFocusId.current = selectedId;
+    closePanel();
+  }, [selectedId, closePanel]);
+
+  const handleExitComplete = useCallback(() => {
+    const id = restoreFocusId.current;
+    restoreFocusId.current = null;
+    if (!id || useUiStore.getState().selectedId) return;
+    document.getElementById(`stop-list-row-${id}`)?.focus();
+  }, []);
+
+  useEffect(() => {
+    if (!selectedItem) return;
+    function onKeyDown(event: KeyboardEvent) {
+      if (event.key !== "Escape") return;
+      event.preventDefault();
+      handleClose();
+    }
+    document.addEventListener("keydown", onKeyDown);
+    return () => document.removeEventListener("keydown", onKeyDown);
+  }, [selectedItem, handleClose]);
 
   let tableBody = null;
   if (showSkeleton) {
@@ -61,14 +94,17 @@ export function StopList({ shop, status }: MenuFilterSearchParams) {
           (stopItem.isPending && stopItem.variables?.id === item.id) ||
           (resumeItem.isPending && resumeItem.variables === item.id)
         }
-        onSelect={openPanel}
+        onSelect={handleOpen}
       />
     ));
   }
 
   return (
     <div className="relative">
-      <div className="flex flex-col gap-6 px-4 py-8">
+      <div
+        className="flex flex-col gap-6 px-4 py-8"
+        inert={Boolean(selectedItem)}
+      >
         <h1 className="text-title font-title text-foreground">Стоп-лист</h1>
         <Filters
           shop={filters.shop}
@@ -79,18 +115,19 @@ export function StopList({ shop, status }: MenuFilterSearchParams) {
         <StopListTable>{tableBody}</StopListTable>
       </div>
       <ToastStack />
-      <AnimatePresence>
+      <AnimatePresence onExitComplete={handleExitComplete}>
         {selectedItem ? (
           <motion.button
             key="stop-panel-backdrop"
             type="button"
             className="absolute inset-0 right-[400px] z-10 cursor-default bg-transparent"
-            aria-label="Закрыть панель"
+            tabIndex={-1}
+            aria-hidden="true"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.2 }}
-            onClick={closePanel}
+            onClick={handleClose}
           />
         ) : null}
         {selectedItem ? (
@@ -105,7 +142,7 @@ export function StopList({ shop, status }: MenuFilterSearchParams) {
             <StopReasonPanel
               key={`${selectedItem.id}-${selectedItem.status.kind}`}
               item={selectedItem}
-              onClose={closePanel}
+              onClose={handleClose}
               isResuming={
                 resumeItem.isPending && resumeItem.variables === selectedItem.id
               }

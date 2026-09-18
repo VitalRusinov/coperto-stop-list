@@ -46,9 +46,10 @@ export function StopListItem({
 
   return (
     <div
+      id={`stop-list-row-${item.id}`}
       role="row"
       tabIndex={0}
-      aria-selected={selected}
+      aria-selected={selected ? true : undefined}
       className={`${STOP_LIST_GRID} cursor-pointer py-2.5 text-label ${rowBg} ${
         stopped ? "text-secondary" : "text-foreground"
       } focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-accent`}

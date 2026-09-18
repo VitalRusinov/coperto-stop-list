@@ -1,6 +1,7 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useEffect, useId, useRef, type KeyboardEvent } from "react";
 import {
   Controller,
   useForm,
@@ -30,6 +31,15 @@ type StopReasonPanelProps = {
 
 const ZERO_STOCK_HINT = "Нельзя вернуть в продажу при нулевом остатке";
 
+const FOCUSABLE_SELECTOR = [
+  "button:not([disabled])",
+  "select:not([disabled])",
+  "textarea:not([disabled])",
+  "input:not([disabled])",
+  "a[href]",
+  '[tabindex]:not([tabindex="-1"])',
+].join(",");
+
 const REASON_OPTIONS = STOP_REASONS.map((value) => ({
   value,
   label: STOP_REASON_LABELS[value],
@@ -45,6 +55,12 @@ function defaultValuesFromItem(item: MenuItem): DefaultValues<StopItemPayload> {
   };
 }
 
+function focusableIn(root: HTMLElement) {
+  return Array.from(
+    root.querySelectorAll<HTMLElement>(FOCUSABLE_SELECTOR),
+  ).filter((element) => element.getClientRects().length > 0);
+}
+
 export function StopReasonPanel({
   item,
   onClose,
@@ -57,6 +73,8 @@ export function StopReasonPanel({
 }: StopReasonPanelProps) {
   const stopped = item.status.kind === "stopped";
   const stockZero = item.stock === 0;
+  const titleId = useId();
+  const dialogRef = useRef<HTMLElement>(null);
   const { control, handleSubmit, trigger } = useForm<StopItemPayload>({
     resolver: zodResolver(stopItemPayloadSchema),
     defaultValues: defaultValuesFromItem(item),
@@ -70,14 +88,50 @@ export function StopReasonPanel({
     reason === item.status.reason &&
     until === item.status.until;
 
+  useEffect(() => {
+    dialogRef.current?.focus({ preventScroll: true });
+  }, [item.id]);
+
+  function handleKeyDown(event: KeyboardEvent<HTMLElement>) {
+    if (event.key !== "Tab") return;
+    const root = dialogRef.current;
+    if (!root) return;
+    const nodes = focusableIn(root);
+    if (nodes.length === 0) {
+      event.preventDefault();
+      return;
+    }
+    const first = nodes[0];
+    const last = nodes[nodes.length - 1];
+    const active = document.activeElement;
+    if (event.shiftKey) {
+      if (active === first || active === root) {
+        event.preventDefault();
+        last.focus();
+      }
+    } else if (active === last) {
+      event.preventDefault();
+      first.focus();
+    }
+  }
+
   return (
     <aside
+      ref={dialogRef}
       data-stop-panel
-      className="flex h-full w-[400px] flex-col border-l border-border bg-surface shadow-lg"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby={titleId}
+      tabIndex={-1}
+      onKeyDown={handleKeyDown}
+      className="flex h-full w-[400px] flex-col border-l border-border bg-surface shadow-lg focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-accent"
     >
       <div className="flex items-start justify-between gap-3 p-4">
         <div className="min-w-0">
-          <p className="truncate text-title font-title text-foreground">
+          <p
+            id={titleId}
+            className="truncate text-title font-title text-foreground"
+          >
             {item.title}
           </p>
           <p className="mt-1 text-label text-secondary">
