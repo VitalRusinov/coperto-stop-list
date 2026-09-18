@@ -192,7 +192,7 @@ Next.js App Router, React, TypeScript strict, Tailwind, TanStack Query, Zustand,
 3. [x] Next.js App Router, TypeScript strict, Tailwind, без `src/`. Папки `app/`, `features/stop-list/`, `entities/menu/`, `shared/`.
 4. [x] ESLint + Prettier, зелёный lint.
 5. [x] `shared/styles/tokens.css` + Tailwind `@theme`, системный шрифт, контейнер 1280px, `app/layout.tsx`.
-6. [ ] `app/providers.tsx` — QueryClientProvider.
+6. [x] `app/providers.tsx` — QueryClientProvider.
 
 ### 2. Домен и мок-API
 
