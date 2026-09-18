@@ -1,0 +1,24 @@
+---
+description: Слои, импорты и источники состояния из PLAN.md
+globs: "**/*.{ts,tsx}"
+alwaysApply: false
+---
+
+# Слои и состояние
+
+Состав папок — `PLAN.md`, блок «Слои и папки». Не вводи `src/`, `types/menu.ts`, `server/menu-store.ts`.
+
+## Импорты
+
+- `app/page` → `StopList`
+- `StopList` → `features/stop-list/model`, ui фичи, `shared/ui`
+- `Filters`, `StopListTable`, `StopListItem`, `StopReasonPanel` → `shared/ui` и пропсы. Без Query, без `entities/menu/api`, без хуков мутаций
+- `features/stop-list/model` → `entities/menu/api`
+- `entities/menu/api` → `entities/menu/model`
+- `app/api/**/route.ts` → `store.ts`, `shared/lib`, типы из `entities/menu/model`
+
+## Состояние
+
+- URL — только фильтры `shop` и `status`
+- TanStack Query — единственный кэш списка меню
+- Zustand — панель, `selectedId`, тосты; список позиций сюда не класть
