@@ -218,7 +218,7 @@ Next.js App Router, React, TypeScript strict, Tailwind, TanStack Query, Zustand,
 20. [x] Фильтры в URL (`router.push`), пустой параметр = все; сырые query уходят в GET.
 21. [x] `Filters`: две radio-группы с «Все»; без Query, значения и смена — пропсы из `StopList`.
 22. [x] `StopListTable` + `StopListItem`: колонки Название / Цех / Остаток / Статус / Срок, зебра, приглушение стопа, клик по строке, без кнопок и без запросов.
-23. [ ] `StopList`: хуки Query и URL; заголовок; скелетон; ошибка GET (текст сервера + «Повторить»); пустой список.
+23. [x] `StopList`: хуки Query и URL; заголовок; скелетон; ошибка GET (текст сервера + «Повторить»); пустой список.
 24. [ ] `app/page.tsx` читает `searchParams` и рендерит `StopList`.
 
 ### 5. Панель и мутации
