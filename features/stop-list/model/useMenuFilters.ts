@@ -1,22 +1,17 @@
 "use client";
 
-import { useCallback, useMemo } from "react";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { menuFiltersFromSearchParams, menuFiltersHref } from "./urlFilters";
+import { useCallback } from "react";
+import { usePathname, useRouter } from "next/navigation";
+import {
+  menuFiltersFromSearchParams,
+  menuFiltersHref,
+  type MenuFilterSearchParams,
+} from "./urlFilters";
 
-export function useMenuFilters() {
+export function useMenuFilters(searchParams: MenuFilterSearchParams) {
   const router = useRouter();
   const pathname = usePathname();
-  const searchParams = useSearchParams();
-
-  const filters = useMemo(
-    () =>
-      menuFiltersFromSearchParams({
-        shop: searchParams.get("shop") ?? undefined,
-        status: searchParams.get("status") ?? undefined,
-      }),
-    [searchParams],
-  );
+  const filters = menuFiltersFromSearchParams(searchParams);
 
   const setShop = useCallback(
     (shop: string | undefined) => {

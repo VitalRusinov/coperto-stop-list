@@ -1,8 +1,18 @@
-import type { KeyboardEvent } from "react";
+import { useSyncExternalStore, type KeyboardEvent } from "react";
 import { SHOP_LABELS, type MenuItem } from "@/entities/menu/model";
 import { Badge } from "@/shared/ui";
 import { formatSlotLabel } from "@/shared/ui/untilSlots";
 import { STOP_LIST_GRID } from "./StopListTable";
+
+const subscribeNever = () => () => {};
+
+function useIsClient() {
+  return useSyncExternalStore(
+    subscribeNever,
+    () => true,
+    () => false,
+  );
+}
 
 type StopListItemProps = {
   item: MenuItem;
@@ -53,7 +63,9 @@ export function StopListItem({
         <StatusCell item={item} isSaving={isSaving} />
       </div>
       <div role="cell">
-        {item.status.kind === "stopped" ? untilText(item.status.until) : null}
+        {item.status.kind === "stopped" ? (
+          <UntilText until={item.status.until} />
+        ) : null}
       </div>
     </div>
   );
@@ -65,7 +77,9 @@ function StatusCell({ item, isSaving }: { item: MenuItem; isSaving: boolean }) {
   return null;
 }
 
-function untilText(until: string | null): string {
+function UntilText({ until }: { until: string | null }) {
+  const isClient = useIsClient();
   if (until === null) return "до конца смены";
+  if (!isClient) return null;
   return formatSlotLabel(new Date(until), new Date());
 }

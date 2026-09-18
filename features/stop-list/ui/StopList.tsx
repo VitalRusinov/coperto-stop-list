@@ -1,24 +1,20 @@
 "use client";
 
-import { Suspense, type ReactNode } from "react";
 import { Button } from "@/shared/ui";
-import { useMenuFilters, useMenuList, useUiStore } from "../model";
+import {
+  useMenuFilters,
+  useMenuList,
+  useUiStore,
+  type MenuFilterSearchParams,
+} from "../model";
 import { Filters } from "./Filters";
 import { StopListItem } from "./StopListItem";
 import { STOP_LIST_GRID, StopListTable } from "./StopListTable";
 
 const SKELETON_ROWS = 8;
 
-export function StopList() {
-  return (
-    <Suspense fallback={<StopListShell table={<TableSkeleton />} />}>
-      <StopListContent />
-    </Suspense>
-  );
-}
-
-function StopListContent() {
-  const { filters, setShop, setStatus } = useMenuFilters();
+export function StopList({ shop, status }: MenuFilterSearchParams) {
+  const { filters, setShop, setStatus } = useMenuFilters({ shop, status });
   const { data, error, refetch, showSkeleton, isError } = useMenuList(filters);
   const selectedId = useUiStore((state) => state.selectedId);
   const openPanel = useUiStore((state) => state.openPanel);
@@ -58,32 +54,15 @@ function StopListContent() {
   }
 
   return (
-    <StopListShell
-      filters={
-        <Filters
-          shop={filters.shop}
-          status={filters.status}
-          onShopChange={setShop}
-          onStatusChange={setStatus}
-        />
-      }
-      table={tableBody}
-    />
-  );
-}
-
-function StopListShell({
-  filters,
-  table,
-}: {
-  filters?: ReactNode;
-  table: ReactNode;
-}) {
-  return (
     <div className="flex flex-col gap-6 px-4 py-8">
       <h1 className="text-title font-title text-foreground">Стоп-лист</h1>
-      {filters}
-      <StopListTable>{table}</StopListTable>
+      <Filters
+        shop={filters.shop}
+        status={filters.status}
+        onShopChange={setShop}
+        onStatusChange={setStatus}
+      />
+      <StopListTable>{tableBody}</StopListTable>
     </div>
   );
 }
