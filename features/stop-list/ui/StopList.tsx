@@ -19,6 +19,7 @@ import { ToastStack } from "./ToastStack";
 
 const SKELETON_ROWS = 8;
 
+/** Экран стоп-листа: фильтры, таблица, панель и тосты. Хуки запросов только здесь. */
 export function StopList({ shop, status }: MenuFilterSearchParams) {
   const { filters, setShop, setStatus } = useMenuFilters({ shop, status });
   const { data, error, refetch, showSkeleton, isError } = useMenuList(filters);
@@ -167,6 +168,7 @@ export function StopList({ shop, status }: MenuFilterSearchParams) {
   );
 }
 
+/** Скелетон таблицы на первый GET. */
 function TableSkeleton() {
   return Array.from({ length: SKELETON_ROWS }, (_, index) => (
     <div

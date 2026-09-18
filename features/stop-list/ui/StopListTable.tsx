@@ -9,6 +9,7 @@ type StopListTableProps = {
   children: ReactNode;
 };
 
+/** Таблица стоп-листа: шапка колонок и строки-дети. Без запросов. */
 export function StopListTable({ children }: StopListTableProps) {
   return (
     <div

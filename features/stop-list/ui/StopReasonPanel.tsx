@@ -61,6 +61,7 @@ function focusableIn(root: HTMLElement) {
   ).filter((element) => element.getClientRects().length > 0);
 }
 
+/** Панель блюда: причина, срок и кнопки стопа, resume и сохранения. */
 export function StopReasonPanel({
   item,
   onClose,

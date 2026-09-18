@@ -10,6 +10,7 @@ type ToastProps = {
   onClose: () => void;
 };
 
+/** Тост ошибки: автоскрытие и закрытие вручную. */
 export function Toast({ message, onClose }: ToastProps) {
   useEffect(() => {
     const timer = window.setTimeout(onClose, AUTO_HIDE_MS);

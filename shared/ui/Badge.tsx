@@ -17,6 +17,7 @@ type BadgeProps = {
   variant: keyof typeof variants;
 };
 
+/** Бейдж статуса строки: «Стоп» или «Сохраняется». */
 export function Badge({ variant }: BadgeProps) {
   const { label, className } = variants[variant];
 

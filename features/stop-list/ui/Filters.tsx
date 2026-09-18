@@ -39,6 +39,7 @@ type FiltersProps = {
   onStatusChange: (status: string | undefined) => void;
 };
 
+/** Фильтры цеха и статуса. Значения и смена приходят пропсами, без Query. */
 export function Filters({
   shop,
   status,
@@ -70,6 +71,7 @@ type FilterGroupProps = {
   onChange: (value: string | undefined) => void;
 };
 
+/** Горизонтальная radio-группа с вариантом «Все». */
 function FilterGroup({ label, value, options, onChange }: FilterGroupProps) {
   const labelId = useId();
   const selectedIndex = options.findIndex((option) => option.value === value);

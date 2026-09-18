@@ -12,6 +12,7 @@ type SelectProps = {
   placeholder?: string;
 } & Omit<SelectHTMLAttributes<HTMLSelectElement>, "children">;
 
+/** Селект с лейблом и текстом ошибки под полем. */
 export function Select({
   label,
   error,

@@ -4,6 +4,7 @@ import { useCallback } from "react";
 import { Toast } from "@/shared/ui";
 import { useUiStore } from "../model";
 
+/** Один тост очереди. */
 function ToastEntry({ id, message }: { id: string; message: string }) {
   const dismissToast = useUiStore((state) => state.dismissToast);
   const onClose = useCallback(() => {
@@ -13,6 +14,7 @@ function ToastEntry({ id, message }: { id: string; message: string }) {
   return <Toast message={message} onClose={onClose} />;
 }
 
+/** Очередь тостов из Zustand, сверху справа. */
 export function ToastStack() {
   const toasts = useUiStore((state) => state.toasts);
 

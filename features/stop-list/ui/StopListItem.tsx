@@ -23,6 +23,7 @@ type StopListItemProps = {
   onSelect: (id: string) => void;
 };
 
+/** Строка позиции: клик открывает панель, без кнопок и запросов. */
 export function StopListItem({
   item,
   index,
@@ -73,6 +74,7 @@ export function StopListItem({
   );
 }
 
+/** Ячейка статуса: пусто, «Стоп» или «Сохраняется». */
 function StatusCell({ item, isSaving }: { item: MenuItem; isSaving: boolean }) {
   let badge = null;
   if (isSaving) {
@@ -88,6 +90,7 @@ function StatusCell({ item, isSaving }: { item: MenuItem; isSaving: boolean }) {
   );
 }
 
+/** Подпись срока стопа в колонке «Срок». */
 function UntilText({ until }: { until: string | null }) {
   const isClient = useIsClient();
   if (until === null) return "до конца смены";

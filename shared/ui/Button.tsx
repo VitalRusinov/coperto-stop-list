@@ -15,6 +15,7 @@ type ButtonProps = {
   children: ReactNode;
 } & Omit<ButtonHTMLAttributes<HTMLButtonElement>, "children">;
 
+/** Индикатор загрузки на кнопке. */
 function Spinner() {
   return (
     <svg
@@ -42,6 +43,7 @@ function Spinner() {
   );
 }
 
+/** Кнопка: акцент, нейтральная или ghost; в loading — спиннер и disabled. */
 export function Button({
   variant = "neutral",
   loading = false,

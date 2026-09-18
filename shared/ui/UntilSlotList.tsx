@@ -14,6 +14,7 @@ type UntilSlotListProps = {
   now?: Date;
 };
 
+/** Список срока стопа: «до конца смены» и слоты по 15 минут на 24 часа. */
 export function UntilSlotList({
   label,
   error,
