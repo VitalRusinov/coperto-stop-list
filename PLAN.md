@@ -234,7 +234,7 @@ Next.js App Router, React, TypeScript strict, Tailwind, TanStack Query, Zustand,
 
 ### 6. Сдача
 
-33. [ ] README: запуск, слои, обоснования, in-memory на Vercel, пожелания (нулевой остаток, истечение срока).
+33. [x] README: запуск, слои, обоснования, in-memory на Vercel, пожелания (нулевой остаток, истечение срока).
 34. [ ] Один тест на rollback оптимистики.
 35. [ ] JSDoc во все компоненты.
 36. [ ] Запуск проверки линтера и Prettier перед публикацией.
