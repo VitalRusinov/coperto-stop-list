@@ -7,9 +7,7 @@ export const stopItemPayloadSchema = z
     reason: z.enum(STOP_REASONS, {
       error: "Укажите причину стопа",
     }),
-    until: z.union([z.string(), z.null()], {
-      error: "Укажите срок стопа",
-    }),
+    until: z.string({ error: "Укажите срок стопа" }).nullable(),
   })
   .superRefine((value, ctx) => {
     const untilError = validateUntil(value.until);

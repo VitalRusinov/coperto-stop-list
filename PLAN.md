@@ -226,7 +226,7 @@ Next.js App Router, React, TypeScript strict, Tailwind, TanStack Query, Zustand,
 25. [x] Оверлей панели ~400px, колонки «Статус» и «Срок» под ней; выбранная строка подсвечена.
 26. [x] `useStopItem` / сохранение правки: `cancelQueries`, оптимистичный `setQueryData`, откат `prev` в `onError`, `invalidateQueries` в `onSettled`, «Сохраняется».
 27. [x] `useResumeItem`: тот же цикл `cancelQueries` / `onMutate` / `onError` / `onSettled`; при `stock === 0` кнопка в панели disabled + tooltip на обёртке.
-28. [ ] `StopReasonPanel`: React Hook Form + Zod resolver; шапка блюда, причина, слоты срока; кнопки «В стоп-лист» / «Вернуть в продажу» + «Сохранить»; мутации — колбэки из `StopList`.
+28. [x] `StopReasonPanel`: React Hook Form + Zod resolver; шапка блюда, причина, слоты срока; кнопки «В стоп-лист» / «Вернуть в продажу» + «Сохранить»; мутации — колбэки из `StopList`.
 29. [ ] Валидация: пустой blur без ошибки; после submit — ошибки под пустыми/невалидными полями; «Сохранить» disabled без изменений.
 30. [ ] Тост при ошибке сервера; откат строки; после `invalidateQueries` список не сбрасывается в скелетон (`isPending` только у первого GET).
 31. [ ] Framer Motion (панель, бейдж).

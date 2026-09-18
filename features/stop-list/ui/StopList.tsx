@@ -86,12 +86,25 @@ export function StopList({ shop, status }: MenuFilterSearchParams) {
           />
           <div className="absolute inset-y-0 right-0 z-20">
             <StopReasonPanel
+              key={`${selectedItem.id}-${selectedItem.status.kind}`}
               item={selectedItem}
               onClose={closePanel}
               isResuming={
                 resumeItem.isPending && resumeItem.variables === selectedItem.id
               }
+              isStopping={
+                stopItem.isPending && stopItem.variables?.id === selectedItem.id
+              }
+              isSaving={
+                stopItem.isPending && stopItem.variables?.id === selectedItem.id
+              }
               onResume={() => resumeItem.mutate(selectedItem.id)}
+              onStop={(payload) =>
+                stopItem.mutate({ id: selectedItem.id, payload })
+              }
+              onSave={(payload) =>
+                stopItem.mutate({ id: selectedItem.id, payload })
+              }
             />
           </div>
         </>
