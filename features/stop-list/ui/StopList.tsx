@@ -4,6 +4,7 @@ import { Button } from "@/shared/ui";
 import {
   useMenuFilters,
   useMenuList,
+  useStopItem,
   useUiStore,
   type MenuFilterSearchParams,
 } from "../model";
@@ -17,6 +18,7 @@ const SKELETON_ROWS = 8;
 export function StopList({ shop, status }: MenuFilterSearchParams) {
   const { filters, setShop, setStatus } = useMenuFilters({ shop, status });
   const { data, error, refetch, showSkeleton, isError } = useMenuList(filters);
+  const stopItem = useStopItem();
   const selectedId = useUiStore((state) => state.selectedId);
   const openPanel = useUiStore((state) => state.openPanel);
   const closePanel = useUiStore((state) => state.closePanel);
@@ -51,6 +53,7 @@ export function StopList({ shop, status }: MenuFilterSearchParams) {
         item={item}
         index={index}
         selected={item.id === selectedId}
+        isSaving={stopItem.isPending && stopItem.variables?.id === item.id}
         onSelect={openPanel}
       />
     ));
