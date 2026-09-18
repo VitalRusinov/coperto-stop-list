@@ -24,7 +24,7 @@
 
 ### Слои и папки (утверждено)
 
-Импорты: `app/page` → `StopList`; `StopList` → `model` + ui фичи + `shared/ui`; `Filters`, `StopListTable`, `StopListItem`, `StopReasonPanel` → `shared/ui` и пропсы, без запросов и хуков Query; `model` → `entities/menu/api`; `entities/menu/api` → типы; `route.ts` → `store.ts` + `shared/lib` + типы из `entities/menu/model`.
+Импорты: `app/page` → `StopList`; `StopList` → `model` + ui фичи + `shared/ui`; `Filters`, `StopListTable`, `StopListItem`, `StopReasonPanel` → `shared/ui` и пропсы, без запросов и хуков Query; `model` → `entities/menu/api`; `entities/menu/api` → `entities/menu/model`; `route.ts` → `store.ts` + `entities/menu/model`.
 
 ```
 app/
@@ -39,19 +39,19 @@ features/stop-list/
   model/  ключи Query, хуки, URL-фильтры, Zustand (панель, тосты)
 
 entities/menu/
-  model/  типы: Shop, StopReason, MenuItem (в т.ч. updatedAt), StopItemPayload
+  model/  типы, labels, Zod StopItemPayload, query shop/status, validateUntil
   api/    getMenuItems, stopMenuItem, resumeMenuItem
 
 shared/
   ui/     Button, Select, Badge, Toast
-  lib/    Zod-схема StopItemPayload, схема query shop/status, validateUntil
+  styles/ tokens.css
 ```
 
-**Обоснование решения.** Слои по смыслу FSD: домен меню (`entities`) отдельно от операции стоп-листа (`features`), общее UI и валидация — в `shared`. Таблица без запросов — требование ТЗ. Store рядом с API — колокация, три роута делят одну память процесса.
+**Обоснование решения.** Слои по смыслу FSD: домен меню (`entities`) отдельно от операции стоп-листа (`features`); типы и правила стопа живут в сущности, `shared` от `entities` не зависит. Таблица без запросов — требование ТЗ. Store рядом с API — колокация, три роута делят одну память процесса.
 
 ### Валидация
 
-- Одна Zod-схема `StopItemPayload` и `validateUntil` в `shared/lib`. На клиенте форма панели — React Hook Form + тот же resolver.
+- Одна Zod-схема `StopItemPayload` и `validateUntil` в `entities/menu/model`. Тексты ошибок на русском. На клиенте форма панели — React Hook Form + тот же resolver.
 - Клиент: на submit «В стоп-лист» / «Сохранить»; на blur — только если значение уже выбрано и оно невалидно. Пустой уход с поля ошибку не ставит.
 - `POST .../stop` и правка стопа: та же схема в route handler до записи в `store`. Причина — одно из четырёх `StopReason`. Срок — `null` (до конца смены) либо ISO: в будущем, не дальше 24 часов, шаг 15 минут.
 - `POST .../resume` при `stock === 0` — отказ.
@@ -197,7 +197,7 @@ Next.js App Router, React, TypeScript strict, Tailwind, TanStack Query, Zustand,
 ### 2. Домен и мок-API
 
 7. [x] Типы и map подписей причин/цехов в `entities/menu/model`. У `MenuItem` поле `updatedAt` (ISO); в UI список его не показывает.
-8. [ ] Zod-схема `StopItemPayload`, схема query `shop`/`status` и `validateUntil` в `shared/lib`.
+8. [x] Zod-схема `StopItemPayload`, схема query `shop`/`status` и `validateUntil` в `entities/menu/model`.
 9. [ ] Сид 12–15 позиций (все цеха, стоп и продажа, один `stock === 0`, у каждой `updatedAt`) и `app/api/menu-items/store.ts` на `globalThis`.
 10. [ ] `GET /api/menu-items`: задержка 600 мс; нет `shop`/`status` — все; невалидный параметр — 400; ~10% ответов 500.
 11. [ ] `POST .../stop`: Zod, 600 мс, ~20% ошибка (постановка и правка причины/срока).

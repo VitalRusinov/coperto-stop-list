@@ -15,7 +15,7 @@ alwaysApply: false
 - `Filters`, `StopListTable`, `StopListItem`, `StopReasonPanel` → `shared/ui` и пропсы. Без Query, без `entities/menu/api`, без хуков мутаций
 - `features/stop-list/model` → `entities/menu/api`
 - `entities/menu/api` → `entities/menu/model`
-- `app/api/**/route.ts` → `store.ts`, `shared/lib`, типы из `entities/menu/model`
+- `app/api/**/route.ts` → `store.ts` и `entities/menu/model`
 
 ## Состояние
 
