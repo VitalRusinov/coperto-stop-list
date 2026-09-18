@@ -4,10 +4,20 @@ import { Button } from "@/shared/ui";
 type StopReasonPanelProps = {
   item: MenuItem;
   onClose: () => void;
+  isResuming?: boolean;
+  onResume?: () => void;
 };
 
-export function StopReasonPanel({ item, onClose }: StopReasonPanelProps) {
+const ZERO_STOCK_HINT = "Нельзя вернуть в продажу при нулевом остатке";
+
+export function StopReasonPanel({
+  item,
+  onClose,
+  isResuming = false,
+  onResume,
+}: StopReasonPanelProps) {
   const stopped = item.status.kind === "stopped";
+  const stockZero = item.stock === 0;
 
   return (
     <aside
@@ -30,6 +40,23 @@ export function StopReasonPanel({ item, onClose }: StopReasonPanelProps) {
           ×
         </Button>
       </div>
+      {stopped ? (
+        <div className="mt-auto p-4">
+          <span
+            className="inline-flex"
+            title={stockZero ? ZERO_STOCK_HINT : undefined}
+          >
+            <Button
+              variant="neutral"
+              disabled={stockZero}
+              loading={isResuming}
+              onClick={onResume}
+            >
+              {isResuming ? "Сохраняем…" : "Вернуть в продажу"}
+            </Button>
+          </span>
+        </div>
+      ) : null}
     </aside>
   );
 }

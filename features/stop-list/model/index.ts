@@ -5,5 +5,6 @@ export type { MenuFilterSearchParams } from "./urlFilters";
 export { useMenuFilters } from "./useMenuFilters";
 export { useStopItem } from "./useStopItem";
 export type { StopItemVariables } from "./useStopItem";
+export { useResumeItem } from "./useResumeItem";
 export { useUiStore } from "./uiStore";
 export type { ToastItem } from "./uiStore";

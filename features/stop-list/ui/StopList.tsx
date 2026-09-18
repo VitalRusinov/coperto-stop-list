@@ -4,6 +4,7 @@ import { Button } from "@/shared/ui";
 import {
   useMenuFilters,
   useMenuList,
+  useResumeItem,
   useStopItem,
   useUiStore,
   type MenuFilterSearchParams,
@@ -19,6 +20,7 @@ export function StopList({ shop, status }: MenuFilterSearchParams) {
   const { filters, setShop, setStatus } = useMenuFilters({ shop, status });
   const { data, error, refetch, showSkeleton, isError } = useMenuList(filters);
   const stopItem = useStopItem();
+  const resumeItem = useResumeItem();
   const selectedId = useUiStore((state) => state.selectedId);
   const openPanel = useUiStore((state) => state.openPanel);
   const closePanel = useUiStore((state) => state.closePanel);
@@ -53,7 +55,10 @@ export function StopList({ shop, status }: MenuFilterSearchParams) {
         item={item}
         index={index}
         selected={item.id === selectedId}
-        isSaving={stopItem.isPending && stopItem.variables?.id === item.id}
+        isSaving={
+          (stopItem.isPending && stopItem.variables?.id === item.id) ||
+          (resumeItem.isPending && resumeItem.variables === item.id)
+        }
         onSelect={openPanel}
       />
     ));
@@ -80,7 +85,14 @@ export function StopList({ shop, status }: MenuFilterSearchParams) {
             onClick={closePanel}
           />
           <div className="absolute inset-y-0 right-0 z-20">
-            <StopReasonPanel item={selectedItem} onClose={closePanel} />
+            <StopReasonPanel
+              item={selectedItem}
+              onClose={closePanel}
+              isResuming={
+                resumeItem.isPending && resumeItem.variables === selectedItem.id
+              }
+              onResume={() => resumeItem.mutate(selectedItem.id)}
+            />
           </div>
         </>
       ) : null}
