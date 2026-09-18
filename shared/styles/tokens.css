@@ -4,8 +4,11 @@
   --secondary: #6b645c;
   --surface: #fffbf7;
   --border: #e4ddd4;
+  --zebra: #faf6f1;
+  --stopped-row: #cfc6bb;
   --error: #b42318;
   --accent: #c6462f;
+  --success: #5e6b50;
   --font-system: ui-sans-serif, system-ui, sans-serif;
   --page-max-width: 1280px;
   --title-size: 1.5rem;
@@ -21,8 +24,11 @@
   --color-secondary: var(--secondary);
   --color-surface: var(--surface);
   --color-border: var(--border);
+  --color-zebra: var(--zebra);
+  --color-stopped-row: var(--stopped-row);
   --color-error: var(--error);
   --color-accent: var(--accent);
+  --color-success: var(--success);
   --font-sans: var(--font-system);
   --max-width-page: var(--page-max-width);
   --text-title: var(--title-size);

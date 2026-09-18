@@ -1,4 +1,4 @@
-import { useId, type KeyboardEvent } from "react";
+import { type KeyboardEvent } from "react";
 import {
   MENU_STATUSES,
   SHOP_LABELS,
@@ -47,7 +47,7 @@ export function Filters({
   onStatusChange,
 }: FiltersProps) {
   return (
-    <div className="flex flex-col gap-3">
+    <div className="flex flex-wrap items-center gap-4">
       <FilterGroup
         label="Цех"
         value={shop}
@@ -73,7 +73,6 @@ type FilterGroupProps = {
 
 /** Горизонтальная radio-группа с вариантом «Все». */
 function FilterGroup({ label, value, options, onChange }: FilterGroupProps) {
-  const labelId = useId();
   const selectedIndex = options.findIndex((option) => option.value === value);
   const tabIndex = selectedIndex === -1 ? 0 : selectedIndex;
 
@@ -105,34 +104,34 @@ function FilterGroup({ label, value, options, onChange }: FilterGroupProps) {
   }
 
   return (
-    <div className="flex flex-col gap-1">
-      <p id={labelId} className="text-label font-medium text-foreground">
-        {label}
-      </p>
-      <div
-        role="radiogroup"
-        aria-labelledby={labelId}
-        aria-orientation="horizontal"
-        className="flex flex-wrap gap-2"
-        onKeyDown={handleKeyDown}
-      >
-        {options.map((option, index) => {
-          const checked = option.value === value;
+    <div
+      role="radiogroup"
+      aria-label={label}
+      aria-orientation="horizontal"
+      className="inline-flex overflow-hidden rounded-md border border-border bg-surface"
+      onKeyDown={handleKeyDown}
+    >
+      {options.map((option, index) => {
+        const checked = option.value === value;
 
-          return (
-            <Button
-              key={option.value ?? "all"}
-              variant={checked ? "neutral" : "ghost"}
-              role="radio"
-              aria-checked={checked}
-              tabIndex={index === tabIndex ? 0 : -1}
-              onClick={() => onChange(option.value)}
-            >
-              {option.label}
-            </Button>
-          );
-        })}
-      </div>
+        return (
+          <Button
+            key={option.value ?? "all"}
+            variant="ghost"
+            role="radio"
+            aria-checked={checked}
+            tabIndex={index === tabIndex ? 0 : -1}
+            className={`rounded-none border-0 border-r border-border last:border-r-0 focus-visible:z-10 focus-visible:outline-offset-[-2px] ${
+              checked
+                ? "bg-foreground! text-surface! hover:bg-foreground/90!"
+                : "bg-surface! text-secondary hover:bg-background!"
+            }`}
+            onClick={() => onChange(option.value)}
+          >
+            {option.label}
+          </Button>
+        );
+      })}
     </div>
   );
 }

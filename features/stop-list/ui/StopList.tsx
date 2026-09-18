@@ -102,18 +102,19 @@ export function StopList({ shop, status }: MenuFilterSearchParams) {
 
   return (
     <div className="relative">
-      <div
-        className="flex flex-col gap-6 px-4 py-8"
-        inert={Boolean(selectedItem)}
-      >
+      <div className="flex flex-col gap-6 px-4 py-8">
         <h1 className="text-title font-title text-foreground">Стоп-лист</h1>
-        <Filters
-          shop={filters.shop}
-          status={filters.status}
-          onShopChange={setShop}
-          onStatusChange={setStatus}
-        />
-        <StopListTable>{tableBody}</StopListTable>
+        <div className="flex flex-col gap-3">
+          <Filters
+            shop={filters.shop}
+            status={filters.status}
+            onShopChange={setShop}
+            onStatusChange={setStatus}
+          />
+          <div className="relative z-20">
+            <StopListTable>{tableBody}</StopListTable>
+          </div>
+        </div>
       </div>
       <ToastStack />
       <AnimatePresence onExitComplete={handleExitComplete}>
@@ -121,7 +122,7 @@ export function StopList({ shop, status }: MenuFilterSearchParams) {
           <motion.button
             key="stop-panel-backdrop"
             type="button"
-            className="absolute inset-0 right-[400px] z-10 cursor-default bg-transparent"
+            className="fixed inset-0 z-10 cursor-default bg-transparent"
             tabIndex={-1}
             aria-hidden="true"
             initial={{ opacity: 0 }}
@@ -134,14 +135,14 @@ export function StopList({ shop, status }: MenuFilterSearchParams) {
         {selectedItem ? (
           <motion.div
             key="stop-panel"
-            className="absolute inset-y-0 right-0 z-20"
+            className="fixed top-0 right-0 z-30 h-dvh w-[400px]"
             initial={{ x: "100%" }}
             animate={{ x: "0%" }}
             exit={{ x: "100%" }}
             transition={{ type: "tween", duration: 0.22, ease: "easeOut" }}
           >
             <StopReasonPanel
-              key={`${selectedItem.id}-${selectedItem.status.kind}`}
+              key={selectedItem.id}
               item={selectedItem}
               onClose={handleClose}
               isResuming={
@@ -176,7 +177,7 @@ function TableSkeleton() {
       role="row"
       aria-hidden="true"
       className={`${STOP_LIST_GRID} py-2.5 ${
-        index % 2 === 1 ? "bg-background" : "bg-surface"
+        index % 2 === 1 ? "bg-zebra" : "bg-surface"
       }`}
     >
       <div role="cell" className="min-w-0">

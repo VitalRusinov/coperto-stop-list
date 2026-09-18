@@ -94,7 +94,9 @@ export function UntilSlotList({
               role="option"
               aria-selected={selected}
               className={`flex h-10 shrink-0 cursor-pointer snap-start items-center px-3 text-label ${
-                selected ? "bg-accent/10 text-foreground" : "text-foreground"
+                selected
+                  ? "bg-background font-title text-foreground"
+                  : "text-foreground"
               }`}
               onClick={() => onChange(option.until)}
             >

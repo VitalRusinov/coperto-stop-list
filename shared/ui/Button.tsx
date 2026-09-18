@@ -2,6 +2,7 @@ import type { ButtonHTMLAttributes, ReactNode } from "react";
 
 const variants = {
   accent: "bg-accent text-surface hover:bg-accent/90",
+  success: "bg-success text-surface hover:bg-success/90",
   neutral:
     "border border-border bg-surface text-foreground hover:bg-background",
   ghost: "bg-transparent text-secondary hover:bg-border/60",
@@ -43,7 +44,7 @@ function Spinner() {
   );
 }
 
-/** Кнопка: акцент, нейтральная или ghost; в loading — спиннер и disabled. */
+/** Кнопка: акцент, success, нейтральная или ghost; в loading — спиннер и disabled. */
 export function Button({
   variant = "neutral",
   loading = false,

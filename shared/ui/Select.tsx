@@ -26,6 +26,7 @@ export function Select({
   const selectId = id ?? generatedId;
   const errorId = `${selectId}-error`;
   const invalid = Boolean(error);
+  const empty = props.value === "" || props.value === undefined;
 
   return (
     <div className="flex flex-col gap-1">
@@ -39,14 +40,26 @@ export function Select({
         id={selectId}
         aria-invalid={invalid || undefined}
         aria-describedby={invalid ? errorId : undefined}
-        className={`w-full rounded-md border bg-surface px-3 py-2 text-label text-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent disabled:cursor-not-allowed disabled:opacity-60 ${
-          invalid ? "border-error" : "border-border"
+        className={`w-full rounded-md border bg-surface px-3 py-2 text-label focus-visible:outline-2 focus-visible:outline-offset-[-2px] disabled:cursor-not-allowed disabled:opacity-60 ${
+          empty ? "text-secondary" : "text-foreground"
+        } ${
+          invalid
+            ? "border-error focus-visible:outline-error"
+            : "border-border focus-visible:outline-border"
         } ${className}`}
         {...props}
       >
-        {placeholder ? <option value="">{placeholder}</option> : null}
+        {placeholder ? (
+          <option value="" className="text-secondary">
+            {placeholder}
+          </option>
+        ) : null}
         {options.map((option) => (
-          <option key={option.value} value={option.value}>
+          <option
+            key={option.value}
+            value={option.value}
+            className="text-foreground"
+          >
             {option.label}
           </option>
         ))}

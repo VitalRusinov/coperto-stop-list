@@ -35,9 +35,10 @@ export function StopListItem({
   const zebra = index % 2 === 1;
 
   let rowBg = "bg-surface";
-  if (selected) rowBg = "bg-accent/10";
-  else if (stopped) rowBg = "bg-border/40";
-  else if (zebra) rowBg = "bg-background";
+  if (stopped) rowBg = "bg-stopped-row";
+  else if (zebra) rowBg = "bg-zebra";
+
+  const selectedRing = selected ? "ring-2 ring-inset ring-accent" : "";
 
   function handleKeyDown(event: KeyboardEvent<HTMLDivElement>) {
     if (event.key !== "Enter" && event.key !== " ") return;
@@ -51,7 +52,7 @@ export function StopListItem({
       role="row"
       tabIndex={0}
       aria-selected={selected ? true : undefined}
-      className={`${STOP_LIST_GRID} cursor-pointer py-2.5 text-label ${rowBg} ${
+      className={`${STOP_LIST_GRID} cursor-pointer py-2.5 text-label ${rowBg} ${selectedRing} ${
         stopped ? "text-secondary" : "text-foreground"
       } focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-accent`}
       onClick={() => onSelect(item.id)}
