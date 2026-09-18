@@ -22,7 +22,7 @@ export function buildUntilSlots(now: Date): UntilSlot[] {
   return slots;
 }
 
-function formatSlotLabel(date: Date, now: Date): string {
+export function formatSlotLabel(date: Date, now: Date): string {
   const todayStart = new Date(now);
   todayStart.setHours(0, 0, 0, 0);
   const tomorrowStart = new Date(todayStart);
