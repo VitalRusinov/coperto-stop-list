@@ -8,6 +8,7 @@ import {
 import { resumeMenuItem } from "@/entities/menu/api";
 import type { MenuItem } from "@/entities/menu/model";
 import { menuKeys } from "./queries";
+import { useUiStore } from "./uiStore";
 
 type ResumeItemContext = {
   previous: [QueryKey, MenuItem[] | undefined][];
@@ -40,10 +41,15 @@ export function useResumeItem() {
 
       return { previous };
     },
-    onError: (_error, _id, context) => {
+    onError: (error, _id, context) => {
       context?.previous.forEach(([queryKey, data]) => {
         queryClient.setQueryData(queryKey, data);
       });
+      useUiStore
+        .getState()
+        .showToast(
+          error instanceof Error ? error.message : "Не удалось сохранить",
+        );
     },
     onSettled: () => {
       void queryClient.invalidateQueries({ queryKey: menuKeys.all });

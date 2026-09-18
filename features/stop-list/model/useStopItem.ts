@@ -8,6 +8,7 @@ import {
 import { stopMenuItem } from "@/entities/menu/api";
 import type { MenuItem, StopItemPayload } from "@/entities/menu/model";
 import { menuKeys } from "./queries";
+import { useUiStore } from "./uiStore";
 
 export type StopItemVariables = {
   id: string;
@@ -52,10 +53,15 @@ export function useStopItem() {
 
       return { previous };
     },
-    onError: (_error, _variables, context) => {
+    onError: (error, _variables, context) => {
       context?.previous.forEach(([queryKey, data]) => {
         queryClient.setQueryData(queryKey, data);
       });
+      useUiStore
+        .getState()
+        .showToast(
+          error instanceof Error ? error.message : "Не удалось сохранить",
+        );
     },
     onSettled: () => {
       void queryClient.invalidateQueries({ queryKey: menuKeys.all });

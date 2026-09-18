@@ -13,6 +13,7 @@ import { Filters } from "./Filters";
 import { StopListItem } from "./StopListItem";
 import { StopReasonPanel } from "./StopReasonPanel";
 import { STOP_LIST_GRID, StopListTable } from "./StopListTable";
+import { ToastStack } from "./ToastStack";
 
 const SKELETON_ROWS = 8;
 
@@ -29,7 +30,7 @@ export function StopList({ shop, status }: MenuFilterSearchParams) {
   let tableBody = null;
   if (showSkeleton) {
     tableBody = <TableSkeleton />;
-  } else if (isError) {
+  } else if (isError && !data) {
     const message =
       error instanceof Error ? error.message : "Не удалось загрузить список";
     tableBody = (
@@ -76,6 +77,7 @@ export function StopList({ shop, status }: MenuFilterSearchParams) {
         />
         <StopListTable>{tableBody}</StopListTable>
       </div>
+      <ToastStack />
       {selectedItem ? (
         <>
           <button
