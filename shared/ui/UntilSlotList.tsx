@@ -10,6 +10,7 @@ type UntilSlotListProps = {
   error?: string;
   value: string | null | undefined;
   onChange: (value: string | null) => void;
+  onBlur?: () => void;
   now?: Date;
 };
 
@@ -18,6 +19,7 @@ export function UntilSlotList({
   error,
   value,
   onChange,
+  onBlur,
   now,
 }: UntilSlotListProps) {
   const listId = useId();
@@ -76,6 +78,7 @@ export function UntilSlotList({
         aria-activedescendant={
           selectedIndex >= 0 ? `${listId}-option-${selectedIndex}` : undefined
         }
+        onBlur={onBlur}
         onKeyDown={handleKeyDown}
         className={`h-40 snap-y snap-mandatory overflow-y-auto rounded-md border bg-surface focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent ${
           invalid ? "border-error" : "border-border"

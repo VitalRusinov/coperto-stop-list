@@ -1,7 +1,12 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Controller, useForm, type DefaultValues } from "react-hook-form";
+import {
+  Controller,
+  useForm,
+  useWatch,
+  type DefaultValues,
+} from "react-hook-form";
 import {
   SHOP_LABELS,
   STOP_REASON_LABELS,
@@ -52,10 +57,18 @@ export function StopReasonPanel({
 }: StopReasonPanelProps) {
   const stopped = item.status.kind === "stopped";
   const stockZero = item.stock === 0;
-  const { control, handleSubmit } = useForm<StopItemPayload>({
+  const { control, handleSubmit, trigger } = useForm<StopItemPayload>({
     resolver: zodResolver(stopItemPayloadSchema),
     defaultValues: defaultValuesFromItem(item),
+    mode: "onSubmit",
+    reValidateMode: "onChange",
   });
+  const reason = useWatch({ control, name: "reason" });
+  const until = useWatch({ control, name: "until" });
+  const saveUnchanged =
+    item.status.kind === "stopped" &&
+    reason === item.status.reason &&
+    until === item.status.until;
 
   return (
     <aside
@@ -101,7 +114,12 @@ export function StopReasonPanel({
                 error={fieldState.error?.message}
                 name={field.name}
                 value={field.value ?? ""}
-                onBlur={field.onBlur}
+                onBlur={() => {
+                  field.onBlur();
+                  if (field.value) {
+                    void trigger("reason");
+                  }
+                }}
                 onChange={(event) => {
                   const next = event.target.value;
                   field.onChange(next === "" ? undefined : next);
@@ -118,6 +136,12 @@ export function StopReasonPanel({
                 error={fieldState.error?.message}
                 value={field.value}
                 onChange={field.onChange}
+                onBlur={() => {
+                  field.onBlur();
+                  if (field.value !== undefined) {
+                    void trigger("until");
+                  }
+                }}
               />
             )}
           />
@@ -138,7 +162,12 @@ export function StopReasonPanel({
                   {isResuming ? "Сохраняем…" : "Вернуть в продажу"}
                 </Button>
               </span>
-              <Button type="submit" variant="accent" loading={isSaving}>
+              <Button
+                type="submit"
+                variant="accent"
+                disabled={saveUnchanged}
+                loading={isSaving}
+              >
                 {isSaving ? "Сохраняем…" : "Сохранить"}
               </Button>
             </>
