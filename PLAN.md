@@ -201,7 +201,7 @@ Next.js App Router, React, TypeScript strict, Tailwind, TanStack Query, Zustand,
 9. [x] Сид 12–15 позиций (все цеха, стоп и продажа, один `stock === 0`, у каждой `updatedAt`) и `app/api/menu-items/store.ts` на `globalThis`.
 10. [x] `GET /api/menu-items`: задержка 600 мс; нет `shop`/`status` — все; невалидный параметр — 400; ~20% ответов 500.
 11. [x] `POST .../stop`: Zod, 600 мс, ~20% ошибка (постановка и правка причины/срока).
-12. [ ] `POST .../resume`: 600 мс, ~20% ошибка, отказ при `stock === 0`.
+12. [x] `POST .../resume`: 600 мс, ~20% ошибка, отказ при `stock === 0`.
 
 ### 3. Shared UI
 
