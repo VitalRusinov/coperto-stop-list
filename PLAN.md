@@ -213,7 +213,7 @@ Next.js App Router, React, TypeScript strict, Tailwind, TanStack Query, Zustand,
 
 ### 4. Экран списка
 
-18. [ ] `entities/menu/api`: `getMenuItems`, `stopMenuItem`, `resumeMenuItem`.
+18. [x] `entities/menu/api`: `getMenuItems`, `stopMenuItem`, `resumeMenuItem`.
 19. [ ] `menuKeys`, queryOptions списка (`retry: false`), хук списка. Скелетон по `isPending`, не по `isFetching`.
 20. [ ] Фильтры в URL (`router.push`), пустой параметр = все; сырые query уходят в GET.
 21. [ ] `Filters`: две radio-группы с «Все»; без Query, значения и смена — пропсы из `StopList`.
