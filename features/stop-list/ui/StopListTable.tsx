@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 
 export const STOP_LIST_GRID =
-  "grid grid-cols-[minmax(12ch,1fr)_max-content_max-content_max-content_max-content] items-center gap-x-4 px-4";
+  "grid grid-cols-[minmax(12ch,1fr)_7.5rem_5.5rem_10rem_15rem] items-center gap-x-4 px-4";
 
 const COLUMNS = ["Название", "Цех", "Остаток", "Статус", "Срок"] as const;
 

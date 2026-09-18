@@ -9,6 +9,7 @@ import {
 } from "../model";
 import { Filters } from "./Filters";
 import { StopListItem } from "./StopListItem";
+import { StopReasonPanel } from "./StopReasonPanel";
 import { STOP_LIST_GRID, StopListTable } from "./StopListTable";
 
 const SKELETON_ROWS = 8;
@@ -18,6 +19,8 @@ export function StopList({ shop, status }: MenuFilterSearchParams) {
   const { data, error, refetch, showSkeleton, isError } = useMenuList(filters);
   const selectedId = useUiStore((state) => state.selectedId);
   const openPanel = useUiStore((state) => state.openPanel);
+  const closePanel = useUiStore((state) => state.closePanel);
+  const selectedItem = data?.find((item) => item.id === selectedId) ?? null;
 
   let tableBody = null;
   if (showSkeleton) {
@@ -54,15 +57,30 @@ export function StopList({ shop, status }: MenuFilterSearchParams) {
   }
 
   return (
-    <div className="flex flex-col gap-6 px-4 py-8">
-      <h1 className="text-title font-title text-foreground">Стоп-лист</h1>
-      <Filters
-        shop={filters.shop}
-        status={filters.status}
-        onShopChange={setShop}
-        onStatusChange={setStatus}
-      />
-      <StopListTable>{tableBody}</StopListTable>
+    <div className="relative">
+      <div className="flex flex-col gap-6 px-4 py-8">
+        <h1 className="text-title font-title text-foreground">Стоп-лист</h1>
+        <Filters
+          shop={filters.shop}
+          status={filters.status}
+          onShopChange={setShop}
+          onStatusChange={setStatus}
+        />
+        <StopListTable>{tableBody}</StopListTable>
+      </div>
+      {selectedItem ? (
+        <>
+          <button
+            type="button"
+            className="absolute inset-0 right-[400px] z-10 cursor-default bg-transparent"
+            aria-label="Закрыть панель"
+            onClick={closePanel}
+          />
+          <div className="absolute inset-y-0 right-0 z-20">
+            <StopReasonPanel item={selectedItem} onClose={closePanel} />
+          </div>
+        </>
+      ) : null}
     </div>
   );
 }
