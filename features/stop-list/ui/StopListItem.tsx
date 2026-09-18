@@ -1,4 +1,5 @@
 import { useSyncExternalStore, type KeyboardEvent } from "react";
+import { AnimatePresence } from "framer-motion";
 import { SHOP_LABELS, type MenuItem } from "@/entities/menu/model";
 import { Badge } from "@/shared/ui";
 import { formatSlotLabel } from "@/shared/ui/untilSlots";
@@ -72,9 +73,18 @@ export function StopListItem({
 }
 
 function StatusCell({ item, isSaving }: { item: MenuItem; isSaving: boolean }) {
-  if (isSaving) return <Badge variant="saving" />;
-  if (item.status.kind === "stopped") return <Badge variant="stop" />;
-  return null;
+  let badge = null;
+  if (isSaving) {
+    badge = <Badge key="saving" variant="saving" />;
+  } else if (item.status.kind === "stopped") {
+    badge = <Badge key="stop" variant="stop" />;
+  }
+
+  return (
+    <AnimatePresence initial={false} mode="wait">
+      {badge}
+    </AnimatePresence>
+  );
 }
 
 function UntilText({ until }: { until: string | null }) {

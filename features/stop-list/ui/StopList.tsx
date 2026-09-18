@@ -1,5 +1,6 @@
 "use client";
 
+import { AnimatePresence, motion } from "framer-motion";
 import { Button } from "@/shared/ui";
 import {
   useMenuFilters,
@@ -78,15 +79,29 @@ export function StopList({ shop, status }: MenuFilterSearchParams) {
         <StopListTable>{tableBody}</StopListTable>
       </div>
       <ToastStack />
-      {selectedItem ? (
-        <>
-          <button
+      <AnimatePresence>
+        {selectedItem ? (
+          <motion.button
+            key="stop-panel-backdrop"
             type="button"
             className="absolute inset-0 right-[400px] z-10 cursor-default bg-transparent"
             aria-label="Закрыть панель"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.2 }}
             onClick={closePanel}
           />
-          <div className="absolute inset-y-0 right-0 z-20">
+        ) : null}
+        {selectedItem ? (
+          <motion.div
+            key="stop-panel"
+            className="absolute inset-y-0 right-0 z-20"
+            initial={{ x: "100%" }}
+            animate={{ x: "0%" }}
+            exit={{ x: "100%" }}
+            transition={{ type: "tween", duration: 0.22, ease: "easeOut" }}
+          >
             <StopReasonPanel
               key={`${selectedItem.id}-${selectedItem.status.kind}`}
               item={selectedItem}
@@ -108,9 +123,9 @@ export function StopList({ shop, status }: MenuFilterSearchParams) {
                 stopItem.mutate({ id: selectedItem.id, payload })
               }
             />
-          </div>
-        </>
-      ) : null}
+          </motion.div>
+        ) : null}
+      </AnimatePresence>
     </div>
   );
 }

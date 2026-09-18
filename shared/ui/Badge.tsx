@@ -1,3 +1,7 @@
+"use client";
+
+import { motion } from "framer-motion";
+
 const variants = {
   stop: {
     label: "Стоп",
@@ -17,10 +21,14 @@ export function Badge({ variant }: BadgeProps) {
   const { label, className } = variants[variant];
 
   return (
-    <span
+    <motion.span
+      initial={{ opacity: 0, y: 4 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: -4 }}
+      transition={{ type: "tween", duration: 0.18, ease: "easeOut" }}
       className={`inline-flex items-center rounded-md px-2 py-0.5 text-[length:var(--error-size)] font-medium ${className}`}
     >
       {label}
-    </span>
+    </motion.span>
   );
 }

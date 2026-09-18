@@ -229,7 +229,7 @@ Next.js App Router, React, TypeScript strict, Tailwind, TanStack Query, Zustand,
 28. [x] `StopReasonPanel`: React Hook Form + Zod resolver; шапка блюда, причина, слоты срока; кнопки «В стоп-лист» / «Вернуть в продажу» + «Сохранить»; мутации — колбэки из `StopList`.
 29. [x] Валидация: пустой blur без ошибки; после submit — ошибки под пустыми/невалидными полями; «Сохранить» disabled без изменений.
 30. [x] Тост при ошибке сервера; откат строки; после `invalidateQueries` список не сбрасывается в скелетон (`isPending` только у первого GET).
-31. [ ] Framer Motion (панель, бейдж).
+31. [x] Framer Motion (панель, бейдж).
 32. [ ] Доступность: Escape, focus trap, возврат фокуса на строку, aria у диалога / listbox / ошибок / фильтров, работа с клавиатуры.
 
 ### 6. Сдача
